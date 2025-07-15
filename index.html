@@ -240,7 +240,6 @@
             transition: all 0.3s ease;
             transform: perspective(1000px) rotateX(0deg);
             cursor: pointer;
-            position: relative;
         }
 
         .file-upload-area:hover {
@@ -254,33 +253,11 @@
             background: var(--glow);
         }
 
-        .file-upload-area.uploading {
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
         .upload-icon {
             font-size: 4rem;
             color: var(--accent);
             margin-bottom: 1rem;
             animation: bounce 2s ease-in-out infinite;
-        }
-
-        .progress-bar {
-            display: none;
-            width: 100%;
-            height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(45deg, var(--accent), #8b5cf6);
-            width: 0%;
-            transition: width 0.3s ease;
         }
 
         .file-grid {
@@ -341,12 +318,6 @@
             margin-bottom: 1rem;
         }
 
-        .file-meta {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
         .download-btn {
             background: var(--accent);
             color: white;
@@ -356,30 +327,12 @@
             cursor: pointer;
             transition: all 0.3s ease;
             transform: perspective(1000px) rotateX(0deg);
-            margin-right: 10px;
         }
 
         .download-btn:hover {
             background: var(--accent-hover);
             transform: perspective(1000px) rotateX(-5deg) translateY(-2px);
             box-shadow: 0 10px 20px var(--glow);
-        }
-
-        .delete-btn {
-            background: #dc2626;
-            color: white;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            transform: perspective(1000px) rotateX(0deg);
-        }
-
-        .delete-btn:hover {
-            background: #b91c1c;
-            transform: perspective(1000px) rotateX(-5deg) translateY(-2px);
-            box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3);
         }
 
         .stats {
@@ -409,22 +362,6 @@
         .stat-label {
             color: var(--text-secondary);
             margin-top: 0.5rem;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-        }
-
-        .spinner {
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
         }
 
         footer {
@@ -471,11 +408,6 @@
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .modal {
@@ -567,34 +499,53 @@
                 <h3>Drag & Drop Files Here</h3>
                 <p>or click to browse</p>
                 <input type="file" id="fileInput" style="display: none;" onchange="handleFileSelect(event)" multiple>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
             </div>
         </section>
 
         <section id="files" class="section">
             <h2>Available Files</h2>
-            <div class="loading" id="loadingFiles">
-                <div class="spinner"></div>
-                <p>Loading files...</p>
+            <div class="file-grid" id="fileGrid">
+                <!-- Sample files - replace with your actual files -->
+                <div class="file-card">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                        <h3>Document.pdf</h3>
+                        <p>2.5 MB • PDF Document</p>
+                        <button class="download-btn" onclick="downloadFile('document.pdf')">Download</button>
+                    </div>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">🎵</div>
+                    <div class="file-info">
+                        <h3>Music.mp3</h3>
+                        <p>4.2 MB • Audio File</p>
+                        <button class="download-btn" onclick="downloadFile('music.mp3')">Download</button>
+                    </div>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">🖼️</div>
+                    <div class="file-info">
+                        <h3>Image.jpg</h3>
+                        <p>1.8 MB • Image File</p>
+                        <button class="download-btn" onclick="downloadFile('image.jpg')">Download</button>
+                    </div>
+                </div>
             </div>
-            <div class="file-grid" id="fileGrid"></div>
         </section>
 
         <section id="stats" class="section">
             <h2>Platform Stats</h2>
             <div class="stats">
                 <div class="stat-item">
-                    <div class="stat-number" id="totalFiles">0</div>
+                    <div class="stat-number" id="totalFiles">127</div>
                     <div class="stat-label">Total Files</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" id="totalDownloads">0</div>
+                    <div class="stat-number" id="totalDownloads">2,349</div>
                     <div class="stat-label">Downloads</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" id="totalUsers">0</div>
+                    <div class="stat-number" id="totalUsers">456</div>
                     <div class="stat-label">Users</div>
                 </div>
             </div>
@@ -607,35 +558,15 @@
 
     <div class="modal" id="uploadModal">
         <div class="modal-content">
-            <h3 id="modalTitle">Upload Complete!</h3>
-            <p id="modalMessage">Your file has been uploaded successfully and is now available for download.</p>
+            <h3>Upload Complete!</h3>
+            <p>Your file has been uploaded successfully and is now available for download.</p>
             <button class="download-btn" onclick="closeModal()">Close</button>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-storage-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
-
     <script>
-        // Firebase configuration - REPLACE WITH YOUR ACTUAL CONFIG
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const storage = firebase.storage();
-        const db = firebase.firestore();
-
         let currentTheme = 'dark';
-        let stats = { totalFiles: 0, totalDownloads: 0, totalUsers: 0 };
+        let uploadedFiles = [];
 
         function toggleTheme() {
             const body = document.body;
@@ -679,207 +610,128 @@
             processFiles(files);
         }
 
-        async function processFiles(files) {
-            const uploadArea = document.querySelector('.file-upload-area');
-            const progressBar = document.querySelector('.progress-bar');
-            const progressFill = document.querySelector('.progress-fill');
-            
-            uploadArea.classList.add('uploading');
-            progressBar.style.display = 'block';
-            
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                
-                try {
-                    // Upload file to Firebase Storage
-                    const storageRef = storage.ref(`files/${Date.now()}_${file.name}`);
-                    const uploadTask = storageRef.put(file);
-                    
-                    // Monitor upload progress
-                    uploadTask.on('state_changed', 
-                        (snapshot) => {
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            progressFill.style.width = `${progress}%`;
-                        },
-                        (error) => {
-                            console.error('Upload error:', error);
-                            showModal('Upload Error', 'Failed to upload file. Please try again.');
-                        },
-                        async () => {
-                            // Upload completed successfully
-                            const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-                            
-                            // Save file metadata to Firestore
-                            await db.collection('files').add({
-                                name: file.name,
-                                size: file.size,
-                                type: file.type,
-                                downloadURL: downloadURL,
-                                uploadedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                downloads: 0
-                            });
-                            
-                            // Update stats
-                            await updateStats('upload');
-                        }
-                    );
-                } catch (error) {
-                    console.error('Error uploading file:', error);
-                    showModal('Upload Error', 'Failed to upload file. Please try again.');
-                }
+        function processFiles(files) {
+            for (let file of files) {
+                uploadedFiles.push({
+                    name: file.name,
+                    size: (file.size / 1024 / 1024).toFixed(1) + ' MB',
+                    type: file.type,
+                    data: file
+                });
             }
-            
-            uploadArea.classList.remove('uploading');
-            progressBar.style.display = 'none';
-            progressFill.style.width = '0%';
-            
-            // Refresh file grid
-            setTimeout(() => {
-                loadFiles();
-                showModal('Upload Complete!', 'Your files have been uploaded successfully and are now available for download.');
-            }, 1000);
+            updateFileGrid();
+            showModal();
         }
 
-        async function loadFiles() {
+        function updateFileGrid() {
             const fileGrid = document.getElementById('fileGrid');
-            const loadingDiv = document.getElementById('loadingFiles');
-            
-            loadingDiv.style.display = 'block';
             fileGrid.innerHTML = '';
             
-            try {
-                const snapshot = await db.collection('files').orderBy('uploadedAt', 'desc').get();
-                
-                if (snapshot.empty) {
-                    fileGrid.innerHTML = '<p style="text-align: center; color: var(--text-secondary); grid-column: 1 / -1;">No files uploaded yet. Be the first to share!</p>';
-                } else {
-                    snapshot.forEach((doc) => {
-                        const fileData = doc.data();
-                        const fileCard = createFileCard(doc.id, fileData);
-                        fileGrid.appendChild(fileCard);
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading files:', error);
-                fileGrid.innerHTML = '<p style="text-align: center; color: var(--text-secondary); grid-column: 1 / -1;">Error loading files. Please refresh the page.</p>';
-            }
-            
-            loadingDiv.style.display = 'none';
-        }
-
-        function createFileCard(fileId, fileData) {
-            const fileCard = document.createElement('div');
-            fileCard.className = 'file-card';
-            
-            const uploadDate = fileData.uploadedAt ? 
-                new Date(fileData.uploadedAt.toDate()).toLocaleDateString() : 
-                'Recently';
-            
-            fileCard.innerHTML = `
-                <div class="file-icon">${getFileIcon(fileData.type)}</div>
-                <div class="file-info">
-                    <h3>${fileData.name}</h3>
-                    <p>${formatFileSize(fileData.size)} • ${getFileType(fileData.type)}</p>
-                    <div class="file-meta">
-                        Uploaded: ${uploadDate} • Downloads: ${fileData.downloads || 0}
+            uploadedFiles.forEach((file, index) => {
+                const fileCard = document.createElement('div');
+                fileCard.className = 'file-card';
+                fileCard.innerHTML = `
+                    <div class="file-icon">${getFileIcon(file.type)}</div>
+                    <div class="file-info">
+                        <h3>${file.name}</h3>
+                        <p>${file.size} • ${getFileType(file.type)}</p>
+                        <button class="download-btn" onclick="downloadUploadedFile(${index})">Download</button>
                     </div>
-                    <button class="download-btn" onclick="downloadFile('${fileId}', '${fileData.downloadURL}', '${fileData.name}')">Download</button>
-                    <button class="delete-btn" onclick="deleteFile('${fileId}')">Delete</button>
-                </div>
-            `;
-            
-            return fileCard;
+                `;
+                fileGrid.appendChild(fileCard);
+            });
         }
 
-        async function downloadFile(fileId, downloadURL, fileName) {
-            try {
-                // Create download link
-                const link = document.createElement('a');
-                link.href = downloadURL;
-                link.download = fileName;
-                link.target = '_blank';
-                link.click();
-                
-                // Update download count
-                await db.collection('files').doc(fileId).update({
-                    downloads: firebase.firestore.FieldValue.increment(1)
-                });
-                
-                // Update stats
-                await updateStats('download');
-                
-                // Refresh file grid to show updated download count
-                loadFiles();
-                
-            } catch (error) {
-                console.error('Error downloading file:', error);
-                showModal('Download Error', 'Failed to download file. Please try again.');
+        function getFileIcon(type) {
+            if (type.startsWith('image/')) return '🖼️';
+            if (type.startsWith('audio/')) return '🎵';
+            if (type.startsWith('video/')) return '🎬';
+            if (type.includes('pdf')) return '📄';
+            if (type.includes('text')) return '📝';
+            return '📁';
+        }
+
+        function getFileType(type) {
+            if (type.startsWith('image/')) return 'Image File';
+            if (type.startsWith('audio/')) return 'Audio File';
+            if (type.startsWith('video/')) return 'Video File';
+            if (type.includes('pdf')) return 'PDF Document';
+            if (type.includes('text')) return 'Text File';
+            return 'File';
+        }
+
+        function downloadFile(filename) {
+            // For demo purposes - in real implementation, this would download from server
+            alert(`Downloading ${filename}...`);
+        }
+
+        function downloadUploadedFile(index) {
+            const file = uploadedFiles[index];
+            const url = URL.createObjectURL(file.data);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showModal() {
+            document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                scrollToSection(this.getAttribute('href').substring(1));
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = currentTheme === 'dark' ? 
+                    'rgba(26, 26, 26, 0.95)' : 'rgba(248, 250, 252, 0.95)';
+            } else {
+                header.style.background = currentTheme === 'dark' ? 
+                    'rgba(26, 26, 26, 0.8)' : 'rgba(248, 250, 252, 0.8)';
+            }
+        });
+
+        // Animate stats on scroll
+        function animateStats() {
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const target = parseInt(stat.textContent.replace(/,/g, ''));
+                let current = 0;
+                const increment = target / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current).toLocaleString();
+                }, 20);
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('uploadModal');
+            if (event.target === modal) {
+                closeModal();
             }
         }
 
-        async function deleteFile(fileId) {
-            if (!confirm('Are you sure you want to delete this file?')) return;
-            
-            try {
-                // Get file data first
-                const doc = await db.collection('files').doc(fileId).get();
-                if (doc.exists) {
-                    const fileData = doc.data();
-                    
-                    // Delete from Storage
-                    const storageRef = storage.refFromURL(fileData.downloadURL);
-                    await storageRef.delete();
-                    
-                    // Delete from Firestore
-                    await db.collection('files').doc(fileId).delete();
-                    
-                    // Update stats
-                    await updateStats('delete');
-                    
-                    // Refresh file grid
-                    loadFiles();
-                    
-                    showModal('File Deleted', 'The file has been deleted successfully.');
-                }
-            } catch (error) {
-                console.error('Error deleting file:', error);
-                showModal('Delete Error', 'Failed to delete file. Please try again.');
-            }
-        }
-
-        async function updateStats(action) {
-            try {
-                const statsRef = db.collection('stats').doc('global');
-                
-                if (action === 'upload') {
-                    await statsRef.set({
-                        totalFiles: firebase.firestore.FieldValue.increment(1),
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                } else if (action === 'download') {
-                    await statsRef.set({
-                        totalDownloads: firebase.firestore.FieldValue.increment(1),
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                } else if (action === 'delete') {
-                    await statsRef.set({
-                        totalFiles: firebase.firestore.FieldValue.increment(-1),
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                }
-                
-                loadStats();
-            } catch (error) {
-                console.error('Error updating stats:', error);
-            }
-        }
-
-        async function loadStats() {
-            try {
-                const statsDoc = await db.collection('stats').doc('global').get();
-                if (statsDoc.exists) {
-                    const statsData = statsDoc.data();
-                    stats = {
-                        totalFiles: statsData.totalFiles || 0,
-                        totalDownloads: statsData.totalDownloads || 0,
-                        totalUsers: statsData
+        // Initialize
+        window.addEventListener('load', function() {
+            setTimeout(animateStats, 1000);
+        });
+    </script>
+</body>
