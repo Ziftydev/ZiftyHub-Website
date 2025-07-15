@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZiftyHub - File Sharing Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #333333;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --glow: rgba(59, 130, 246, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #f1f5f9;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --glow: rgba(59, 130, 246, 0.2);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--glow);
+            transform: perspective(1000px) rotateX(0deg);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: perspective(1000px) rotateX(10deg) rotateY(5deg);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--glow);
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .theme-toggle:hover {
+            transform: perspective(1000px) rotateY(10deg) translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: float 3s ease-in-out infinite;
+            text-shadow: 0 0 30px var(--glow);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, var(--accent), #8b5cf6);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateX(0deg);
+            box-shadow: 0 10px 30px var(--glow);
+            animation: slideUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button:hover {
+            transform: perspective(1000px) rotateX(-10deg) translateY(-5px);
+            box-shadow: 0 20px 40px var(--glow);
+        }
+
+        .floating-cubes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .cube {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--accent), #8b5cf6);
+            opacity: 0.1;
+            animation: float3d 8s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        .cube:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .cube:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .cube:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .cube:nth-child(4) {
+            top: 40%;
+            right: 30%;
+            animation-delay: 6s;
+        }
+
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+            animation: slideUp 1s ease-out;
+        }
+
+        .file-upload-area {
+            background: var(--bg-card);
+            border: 2px dashed var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateX(0deg);
+            cursor: pointer;
+        }
+
+        .file-upload-area:hover {
+            transform: perspective(1000px) rotateX(5deg) translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--accent);
+            background: var(--glow);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .file-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateY(0deg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--glow), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .file-card:hover::before {
+            left: 100%;
+        }
+
+        .file-card:hover {
+            transform: perspective(1000px) rotateY(10deg) translateY(-10px);
+            box-shadow: 0 20px 40px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .file-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .file-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .file-info p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .download-btn {
+            background: var(--accent);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateX(0deg);
+        }
+
+        .download-btn:hover {
+            background: var(--accent-hover);
+            transform: perspective(1000px) rotateX(-5deg) translateY(-2px);
+            box-shadow: 0 10px 20px var(--glow);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin: 3rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            transform: perspective(1000px) rotateX(0deg);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: perspective(1000px) rotateX(10deg) translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--glow);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes float3d {
+            0%, 100% { 
+                transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+            }
+            33% { 
+                transform: translateY(-20px) rotateX(90deg) rotateY(0deg);
+            }
+            66% { 
+                transform: translateY(-10px) rotateX(0deg) rotateY(90deg);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) perspective(1000px) rotateX(0deg);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            animation: modalPop 0.3s ease-out;
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: translate(-50%, -50%) perspective(1000px) rotateX(-20deg) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) perspective(1000px) rotateX(0deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">ZiftyHub</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#upload">Upload</a></li>
+                <li><a href="#files">Files</a></li>
+                <li><a href="#stats">Stats</a></li>
+                <li><button class="theme-toggle" onclick="toggleTheme()">🌙 Dark</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="floating-cubes">
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+        </div>
+        <div class="hero-content">
+            <h1>ZiftyHub</h1>
+            <p>Share files instantly with beautiful 3D animations and lightning-fast downloads</p>
+            <button class="cta-button" onclick="scrollToSection('upload')">Upload Your File</button>
+        </div>
+    </section>
+
+    <div class="container">
+        <section id="upload" class="section">
+            <h2>Upload Files</h2>
+            <div class="file-upload-area" onclick="document.getElementById('fileInput').click()" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                <div class="upload-icon">📁</div>
+                <h3>Drag & Drop Files Here</h3>
+                <p>or click to browse</p>
+                <input type="file" id="fileInput" style="display: none;" onchange="handleFileSelect(event)" multiple>
+            </div>
+        </section>
+
+        <section id="files" class="section">
+            <h2>Available Files</h2>
+            <div class="file-grid" id="fileGrid">
+                <!-- Sample files - replace with your actual files -->
+                <div class="file-card">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                        <h3>Document.pdf</h3>
+                        <p>2.5 MB • PDF Document</p>
+                        <button class="download-btn" onclick="downloadFile('document.pdf')">Download</button>
+                    </div>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">🎵</div>
+                    <div class="file-info">
+                        <h3>Music.mp3</h3>
+                        <p>4.2 MB • Audio File</p>
+                        <button class="download-btn" onclick="downloadFile('music.mp3')">Download</button>
+                    </div>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">🖼️</div>
+                    <div class="file-info">
+                        <h3>Image.jpg</h3>
+                        <p>1.8 MB • Image File</p>
+                        <button class="download-btn" onclick="downloadFile('image.jpg')">Download</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="stats" class="section">
+            <h2>Platform Stats</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalFiles">127</div>
+                    <div class="stat-label">Total Files</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalDownloads">2,349</div>
+                    <div class="stat-label">Downloads</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalUsers">456</div>
+                    <div class="stat-label">Users</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 ZiftyHub. All rights reserved.</p>
+    </footer>
+
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <h3>Upload Complete!</h3>
+            <p>Your file has been uploaded successfully and is now available for download.</p>
+            <button class="download-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let currentTheme = 'dark';
+        let uploadedFiles = [];
+
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+            
+            if (currentTheme === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                button.textContent = '☀️ Light';
+                currentTheme = 'light';
+            } else {
+                body.removeAttribute('data-theme');
+                button.textContent = '🌙 Dark';
+                currentTheme = 'dark';
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            processFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            processFiles(files);
+        }
+
+        function processFiles(files) {
+            for (let file of files) {
+                uploadedFiles.push({
+                    name: file.name,
+                    size: (file.size / 1024 / 1024).toFixed(1) + ' MB',
+                    type: file.type,
+                    data: file
+                });
+            }
+            updateFileGrid();
+            showModal();
+        }
+
+        function updateFileGrid() {
+            const fileGrid = document.getElementById('fileGrid');
+            fileGrid.innerHTML = '';
+            
+            uploadedFiles.forEach((file, index) => {
+                const fileCard = document.createElement('div');
+                fileCard.className = 'file-card';
+                fileCard.innerHTML = `
+                    <div class="file-icon">${getFileIcon(file.type)}</div>
+                    <div class="file-info">
+                        <h3>${file.name}</h3>
+                        <p>${file.size} • ${getFileType(file.type)}</p>
+                        <button class="download-btn" onclick="downloadUploadedFile(${index})">Download</button>
+                    </div>
+                `;
+                fileGrid.appendChild(fileCard);
+            });
+        }
+
+        function getFileIcon(type) {
+            if (type.startsWith('image/')) return '🖼️';
+            if (type.startsWith('audio/')) return '🎵';
+            if (type.startsWith('video/')) return '🎬';
+            if (type.includes('pdf')) return '📄';
+            if (type.includes('text')) return '📝';
+            return '📁';
+        }
+
+        function getFileType(type) {
+            if (type.startsWith('image/')) return 'Image File';
+            if (type.startsWith('audio/')) return 'Audio File';
+            if (type.startsWith('video/')) return 'Video File';
+            if (type.includes('pdf')) return 'PDF Document';
+            if (type.includes('text')) return 'Text File';
+            return 'File';
+        }
+
+        function downloadFile(filename) {
+            // For demo purposes - in real implementation, this would download from server
+            alert(`Downloading ${filename}...`);
+        }
+
+        function downloadUploadedFile(index) {
+            const file = uploadedFiles[index];
+            const url = URL.createObjectURL(file.data);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showModal() {
+            document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                scrollToSection(this.getAttribute('href').substring(1));
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = currentTheme === 'dark' ? 
+                    'rgba(26, 26, 26, 0.95)' : 'rgba(248, 250, 252, 0.95)';
+            } else {
+                header.style.background = currentTheme === 'dark' ? 
+                    'rgba(26, 26, 26, 0.8)' : 'rgba(248, 250, 252, 0.8)';
+            }
+        });
+
+        // Animate stats on scroll
+        function animateStats() {
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const target = parseInt(stat.textContent.replace(/,/g, ''));
+                let current = 0;
+                const increment = target / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current).toLocaleString();
+                }, 20);
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('uploadModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            setTimeout(animateStats, 1000);
+        });
+    </script>
+</body>
+</html>
