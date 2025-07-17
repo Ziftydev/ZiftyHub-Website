@@ -106,6 +106,291 @@
             left: 100%;
         }
 
+        /* Verification Modal */
+        .verification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .verification-container {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1));
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.2);
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .verification-title {
+            font-size: 2rem;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #8B5CF6, #A855F7, #C084FC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .verification-text {
+            color: #B8B8B8;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .verification-container-inner {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+
+        .verification-question {
+            color: #FFFFFF;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .verification-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            color: #FFFFFF;
+            text-align: center;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .verification-input::-webkit-outer-spin-button,
+        .verification-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .color-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .color-option.selected {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 200px;
+        }
+
+        .pattern-cell {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .pattern-cell:hover {
+            border-color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .pattern-cell.selected {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #8B5CF6;
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .slider {
+            width: 80%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #8B5CF6, #A855F7);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #8B5CF6, #A855F7);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+
+        .slider-value {
+            color: #8B5CF6;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .verification-input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .verification-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .verify-btn {
+            background: linear-gradient(45deg, #10B981, #059669);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .cancel-btn {
+            background: linear-gradient(45deg, #EF4444, #DC2626);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        .error-message {
+            color: #EF4444;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message {
+            color: #10B981;
+            font-size: 1rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .countdown {
+            color: #8B5CF6;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .verification-progress {
+            color: #8B5CF6;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            display: inline-block;
+        }
+
         @media (max-width: 768px) {
             .main-title {
                 font-size: 2.5rem;
@@ -115,6 +400,51 @@
                 padding: 15px 30px;
                 font-size: 18px;
             }
+
+            .verification-container {
+                padding: 30px 20px;
+            }
+
+            .verification-title {
+                font-size: 1.5rem;
+            }
+
+            .captcha-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .verification-container-inner {
+                padding: 20px;
+            }
+
+            .color-options {
+                gap: 10px;
+            }
+
+            .color-option {
+                width: 50px;
+                height: 50px;
+            }
+
+            .pattern-grid {
+                gap: 8px;
+            }
+
+            .pattern-cell {
+                width: 40px;
+                height: 40px;
+            }
+
+            .verification-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .verify-btn, .cancel-btn {
+                width: 100%;
+                max-width: 200px;
+            }
         }
     </style>
 </head>
@@ -123,9 +453,34 @@
     
     <div class="content">
         <h1 class="main-title">ZiftyHub Menu V1.2</h1>
-        <a href="https://www.mediafire.com/file/o4m4ohgijyo7mt9/npp.8.8.2.Installer.x64.exe/file" class="download-btn" id="downloadBtn">
+        <button class="download-btn" id="downloadBtn">
             Download File
-        </a>
+        </button>
+    </div>
+
+    <!-- Verification Modal -->
+    <div class="verification-modal" id="verificationModal">
+        <div class="verification-container">
+            <h2 class="verification-title">Security Verification</h2>
+            <p class="verification-text">Please complete the verification below to proceed with your download.</p>
+            <div class="verification-progress" id="verificationProgress">Step 1 of 3</div>
+            
+            <div class="verification-container-inner" id="verificationContainer">
+                <div class="verification-question" id="verificationQuestion">What is the first letter of the word "HELLO"?</div>
+                <div id="verificationContent">
+                    <input type="text" class="verification-input" id="verificationInput" placeholder="Enter your answer" maxlength="1">
+                </div>
+            </div>
+            
+            <div class="verification-buttons">
+                <button class="verify-btn" id="verifyBtn">Verify & Download</button>
+                <button class="cancel-btn" id="cancelBtn">Cancel</button>
+            </div>
+            
+            <div class="error-message" id="errorMessage">Incorrect answer. Please try again.</div>
+            <div class="success-message" id="successMessage">Verification successful! Redirecting...</div>
+            <div class="countdown" id="countdown">Redirecting in 3 seconds...</div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -143,8 +498,194 @@
         };
         // ===============================================
 
-        // Apply customization
-        document.getElementById('downloadBtn').href = CONFIG.MEDIAFIRE_URL;
+        // Verification system
+        let currentAnswer = "";
+        let verificationStep = 1;
+        let totalSteps = 3;
+        let selectedColor = "";
+        let selectedPattern = [];
+        let sliderValue = 0;
+        
+        const verificationMethods = [
+            {
+                type: "text",
+                questions: [
+                    { question: "What is the first letter of the word 'HELLO'?", answer: "H" },
+                    { question: "What is the last letter of the word 'WORLD'?", answer: "D" },
+                    { question: "What is the middle letter of the word 'PARTY'?", answer: "R" },
+                    { question: "What is the first letter of the word 'SECURE'?", answer: "S" },
+                    { question: "What is the last letter of the word 'VERIFY'?", answer: "Y" }
+                ]
+            },
+            {
+                type: "color",
+                questions: [
+                    { question: "Select the RED color:", answer: "#FF0000" },
+                    { question: "Select the BLUE color:", answer: "#0000FF" },
+                    { question: "Select the GREEN color:", answer: "#00FF00" },
+                    { question: "Select the YELLOW color:", answer: "#FFFF00" },
+                    { question: "Select the PURPLE color:", answer: "#8B5CF6" }
+                ]
+            },
+            {
+                type: "slider",
+                questions: [
+                    { question: "Set the slider to 25:", answer: 25 },
+                    { question: "Set the slider to 50:", answer: 50 },
+                    { question: "Set the slider to 75:", answer: 75 },
+                    { question: "Set the slider to 10:", answer: 10 },
+                    { question: "Set the slider to 90:", answer: 90 }
+                ]
+            }
+        ];
+
+        function generateVerification() {
+            const method = verificationMethods[verificationStep - 1];
+            const questionData = method.questions[Math.floor(Math.random() * method.questions.length)];
+            
+            currentAnswer = questionData.answer;
+            document.getElementById('verificationQuestion').textContent = questionData.question;
+            document.getElementById('verificationProgress').textContent = `Step ${verificationStep} of ${totalSteps}`;
+            
+            const contentDiv = document.getElementById('verificationContent');
+            
+            if (method.type === "text") {
+                contentDiv.innerHTML = '<input type="text" class="verification-input" id="verificationInput" placeholder="Enter your answer" maxlength="1">';
+                document.getElementById('verificationInput').focus();
+            } else if (method.type === "color") {
+                const colors = [
+                    { color: "#FF0000", name: "Red" },
+                    { color: "#0000FF", name: "Blue" },
+                    { color: "#00FF00", name: "Green" },
+                    { color: "#FFFF00", name: "Yellow" },
+                    { color: "#8B5CF6", name: "Purple" },
+                    { color: "#FFA500", name: "Orange" }
+                ];
+                
+                let colorOptionsHTML = '<div class="color-options">';
+                colors.forEach(colorObj => {
+                    colorOptionsHTML += `<div class="color-option" style="background-color: ${colorObj.color}" data-color="${colorObj.color}" onclick="selectColor('${colorObj.color}')"></div>`;
+                });
+                colorOptionsHTML += '</div>';
+                
+                contentDiv.innerHTML = colorOptionsHTML;
+                selectedColor = "";
+            } else if (method.type === "slider") {
+                contentDiv.innerHTML = `
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="0" class="slider" id="sliderInput" oninput="updateSlider(this.value)">
+                        <div class="slider-value" id="sliderValue">0</div>
+                    </div>
+                `;
+                sliderValue = 0;
+            }
+        }
+
+        function selectColor(color) {
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            selectedColor = color;
+        }
+
+        function updateSlider(value) {
+            sliderValue = parseInt(value);
+            document.getElementById('sliderValue').textContent = value;
+        }
+
+        function showVerificationModal() {
+            verificationStep = 1;
+            generateVerification();
+            document.getElementById('verificationModal').style.display = 'flex';
+            // Reset any previous states
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('countdown').style.display = 'none';
+        }
+
+        function hideVerificationModal() {
+            document.getElementById('verificationModal').style.display = 'none';
+            verificationStep = 1;
+            selectedColor = "";
+            selectedPattern = [];
+            sliderValue = 0;
+        }
+
+        function verifyAnswer() {
+            let userAnswer = "";
+            const method = verificationMethods[verificationStep - 1];
+            
+            if (method.type === "text") {
+                userAnswer = document.getElementById('verificationInput').value.toUpperCase();
+            } else if (method.type === "color") {
+                userAnswer = selectedColor;
+            } else if (method.type === "slider") {
+                userAnswer = sliderValue;
+            }
+            
+            if (userAnswer === currentAnswer || (method.type === "slider" && Math.abs(userAnswer - currentAnswer) <= 2)) {
+                // Correct answer
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                if (verificationStep < totalSteps) {
+                    // Move to next step
+                    verificationStep++;
+                    generateVerification();
+                } else {
+                    // All steps completed
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('countdown').style.display = 'block';
+                    
+                    // Disable buttons during countdown
+                    document.getElementById('verifyBtn').disabled = true;
+                    document.getElementById('cancelBtn').disabled = true;
+                    
+                    // Countdown and redirect
+                    let seconds = 3;
+                    const countdownElement = document.getElementById('countdown');
+                    
+                    const countdownInterval = setInterval(() => {
+                        countdownElement.textContent = `Redirecting in ${seconds} seconds...`;
+                        seconds--;
+                        
+                        if (seconds < 0) {
+                            clearInterval(countdownInterval);
+                            window.open(CONFIG.MEDIAFIRE_URL, '_blank');
+                            hideVerificationModal();
+                            // Re-enable buttons
+                            document.getElementById('verifyBtn').disabled = false;
+                            document.getElementById('cancelBtn').disabled = false;
+                        }
+                    }, 1000);
+                }
+            } else {
+                // Wrong answer
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('countdown').style.display = 'none';
+                generateVerification(); // Generate new verification
+            }
+        }
+
+        // Event listeners
+        document.getElementById('downloadBtn').addEventListener('click', showVerificationModal);
+        document.getElementById('cancelBtn').addEventListener('click', hideVerificationModal);
+        document.getElementById('verifyBtn').addEventListener('click', verifyAnswer);
+
+        // Allow Enter key to submit
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && document.getElementById('verificationModal').style.display === 'flex') {
+                verifyAnswer();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('verificationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideVerificationModal();
+            }
+        });
 
         // Three.js 3D Particle System
         let scene, camera, renderer, particles;
